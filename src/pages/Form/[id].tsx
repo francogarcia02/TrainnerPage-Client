@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -27,8 +28,8 @@ interface Pregunta {
 }
 
 const PlanDetail = () => {
-    const [opcionSelected, setOpcion] = useState<number>(1);
-    const [price, setPrice] = useState<number>(0);
+    const [opcionSelected, setOpcion] = useState<number>();
+    const [price, setPrice] = useState<number>();
     const [respuestas, setRespuestas] = useState<Record<number, string | File[]>>({});
     const [errores, setErrores] = useState<number[]>([])
 
@@ -37,83 +38,83 @@ const PlanDetail = () => {
     
     const plans: Plan[] = [
         {  
-        id:0,
-        titulo: 'Basic',
-        frase: 'Entrenamiento personalizado para comenzar con seguridad',
-        opciones: [
-            {
-                checks: 1,
-                semanas: 4,
-                price: 0
-            },
-            {
-                checks: 2,
-                semanas: 8,
-                price: 0
-            },
-            {
-                checks: 4,
-                semanas: 12,
-                price: 0
-            },
-        ],        
-        atencion: {
-            dias: ['Martes', 'Jueves'],
-            horario: '12 a 16 PM'
-        }
-    },
-    {  
-        id:1,
-        titulo: 'Standard',
-        frase: 'Más seguimiento y optimización para tu progreso',
-        opciones: [
-            {
-                checks: 2,
-                semanas: 4,
-                price: 0
-            },
-            {
-                checks: 4,
-                semanas: 8,
-                price: 0
-            },
-            {
-                checks: 8,
-                semanas: 12,
-                price: 0
-            },
-        ], 
-        atencion: {
-            dias: ['Lunes','Miercoles','Viernes'],
-            horario: '12 a 16 PM'
-        }
-    },
-    {  
-        id:2,
-        titulo: 'Premium',
-        frase: 'Atención exclusiva y seguimiento avanzado',
-        opciones: [
-            {
-                checks: 4,
-                semanas: 4,
-                price: 0
-            },
-            {
-                checks: 8,
-                semanas: 8,
-                price: 0
-            },
-            {
-                checks: 12,
-                semanas: 12,
-                price: 0
-            },
-        ], 
-        atencion: {
-            dias: ['Lunes','Martes','Miercoles','Jueves','Viernes'],
-            horario: '9 a 22 PM'
-        }
-    },
+            id:0,
+            titulo: 'Basic',
+            frase: 'Entrenamiento personalizado para comenzar con seguridad',
+            opciones: [
+                {
+                    checks: 1,
+                    semanas: 4,
+                    price: 30000
+                },
+                {
+                    checks: 2,
+                    semanas: 8,
+                    price: 50000
+                },
+                {
+                    checks: 4,
+                    semanas: 12,
+                    price: 75000
+                },
+            ],        
+            atencion: {
+                dias: ['Martes', 'Jueves'],
+                horario: '12 a 16 PM'
+            }
+        },
+        {  
+            id:1,
+            titulo: 'Standard',
+            frase: 'Más seguimiento y optimización para tu progreso',
+            opciones: [
+                {
+                    checks: 2,
+                    semanas: 4,
+                    price: 38000
+                },
+                {
+                    checks: 4,
+                    semanas: 8,
+                    price: 65000
+                },
+                {
+                    checks: 8,
+                    semanas: 12,
+                    price: 100000
+                },
+            ], 
+            atencion: {
+                dias: ['Lunes','Miercoles','Viernes'],
+                horario: '12 a 16 PM'
+            }
+        },
+        {  
+            id:2,
+            titulo: 'Premium',
+            frase: 'Atención exclusiva y seguimiento avanzado',
+            opciones: [
+                {
+                    checks: 4,
+                    semanas: 4,
+                    price: 50000
+                },
+                {
+                    checks: 8,
+                    semanas: 8,
+                    price: 90000
+                },
+                {
+                    checks: 12,
+                    semanas: 12,
+                    price: 135000
+                },
+            ], 
+            atencion: {
+                dias: ['Lunes','Martes','Miercoles','Jueves','Viernes'],
+                horario: '9 a 22 PM'
+            }
+        },
     ]
     
     const usedPlan: Plan = plans[id];
@@ -210,7 +211,7 @@ const PlanDetail = () => {
         },
         {
             pregunta: 'Ingrese su numero telefonico: ',
-            aclaracion: '(El plan sera enviado por este medio, asegurese de no cometer errores)',
+            aclaracion: '(El plan sera enviado por WhatsApp, asegurese de no cometer errores)',
             function: ''
         },
     ]
@@ -268,13 +269,23 @@ const PlanDetail = () => {
                             <p>Esta opcion altera el precio final del plan</p>
                         </div>
                         <div>
-                            <h1>Opcion seleccionada: Opcion {opcionSelected}</h1>
-                            <h1>Precio final: {price}</h1>
+                            <div className="flex gap-2 justify-start items-center">
+                                <h1 className="font-bold">Opcion seleccionada:</h1>
+                                {opcionSelected ?
+                                    <h1 className="font-bold text-red-600">Opcion {opcionSelected}</h1>
+                                :
+                                    <></>
+                                }
+                            </div>
+                            <div className="flex gap-2 justify-start items-center">
+                                <h1 className="font-bold">Precio final: </h1>
+                                <h1 className="font-bold text-red-600">{price}</h1>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col justify-center items-start pt-5 gap-4">
                         {usedPlan.opciones.map((opcion, index) =>(
-                            <div key={index} className={`w-full rounded-lg border p-2 ${opcionSelected-1 === index ? 'bg-[#252525]' : ''}`}>
+                            <div key={index} className={`w-full rounded-lg border p-2 ${opcionSelected && opcionSelected-1 === index ? 'bg-[#252525]' : ''}`}>
                                 <p className="text-xl font-bold">Opcion {index + 1}</p>
                                 <div className="p-2">
                                     <div className="pb-2">
@@ -289,7 +300,10 @@ const PlanDetail = () => {
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <p>Precio final: ${opcion.price}</p>
+                                        <div className="flex gap-1 justify-center items-center">
+                                            <p className="font-bold">Precio final: </p>
+                                            <p className="font-bold text-red-600">${opcion.price}</p>
+                                        </div>
                                         <button onClick={()=>handleSelectOption(index, opcion.price)} className="p-2 bg-red-500 rounded-lg font-bold">Elegir</button>
                                     </div>
                                 </div>
@@ -318,9 +332,10 @@ const PlanDetail = () => {
                             </div>
                         ))}
                     </div>
-                    <button onClick={handleSubmit} className="p-2 bg-red-500 rounded-lg font-bold">Pagar</button>
-                </div>
+                    <button onClick={handleSubmit} className="p-2 bg-red-500 rounded-lg font-bold">Ir a Pagar</button>
+                </div>                
             </div>
+            <Footer/>
             </>
             }
         </div>

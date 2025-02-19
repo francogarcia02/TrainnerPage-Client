@@ -18,6 +18,7 @@ interface Plan {
 }
 
 const Planes = () => {
+
     const plans: Plan[] = [
         {  
             id:0,
@@ -27,17 +28,17 @@ const Planes = () => {
                 {
                     checks: 1,
                     semanas: 4,
-                    price: 0
+                    price: 30000
                 },
                 {
                     checks: 2,
                     semanas: 8,
-                    price: 0
+                    price: 50000
                 },
                 {
                     checks: 4,
                     semanas: 12,
-                    price: 0
+                    price: 75000
                 },
             ],        
             atencion: {
@@ -53,17 +54,17 @@ const Planes = () => {
                 {
                     checks: 2,
                     semanas: 4,
-                    price: 0
+                    price: 38000
                 },
                 {
                     checks: 4,
                     semanas: 8,
-                    price: 0
+                    price: 65000
                 },
                 {
                     checks: 8,
                     semanas: 12,
-                    price: 0
+                    price: 100000
                 },
             ], 
             atencion: {
@@ -79,17 +80,17 @@ const Planes = () => {
                 {
                     checks: 4,
                     semanas: 4,
-                    price: 0
+                    price: 50000
                 },
                 {
                     checks: 8,
                     semanas: 8,
-                    price: 0
+                    price: 90000
                 },
                 {
                     checks: 12,
                     semanas: 12,
-                    price: 0
+                    price: 135000
                 },
             ], 
             atencion: {
@@ -133,7 +134,7 @@ const Planes = () => {
                             </div>
                         </div>
                         <div className="flex w-full items-end justify-end">
-                            <Link href={`Form/${plan.id}`} className="font-bold text-white bg-[#D72638] rounded-lg p-2">Desde {plan.opciones[0].price}$</Link>
+                            <Link href={`Form/${plan.id}`} className="font-bold text-white bg-[#D72638] rounded-lg p-2">Desde ${plan.opciones[0].price}</Link>
                         </div>
                     </div>
                 ))}
