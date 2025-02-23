@@ -54,7 +54,7 @@ const PlanDetail = () => {
                 {
                     checks: 1,
                     semanas: 4,
-                    price: 100
+                    price: 10
                 },
                 {
                     checks: 2,
@@ -265,7 +265,7 @@ const PlanDetail = () => {
             return;
         }
     
-        const subject = 'Cliente: ' + respuestas[0] + ' || ' + 'Plan: ' + usedPlan.titulo + ' || ' + 'Opcion: ' + opcionSelected
+        const subject = respuestas[0] + ' | ' + 'Plan: ' + usedPlan.titulo + ' | ' + 'Opcion: ' + opcionSelected
         const { text, images } = FormatText({ preguntas, respuestas });
 
         const formData = new FormData();
