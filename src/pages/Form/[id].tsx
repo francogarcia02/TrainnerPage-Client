@@ -54,7 +54,7 @@ const PlanDetail = () => {
                 {
                     checks: 1,
                     semanas: 4,
-                    price: 10
+                    price: 100
                 },
                 {
                     checks: 2,
