@@ -38,7 +38,7 @@ const PlanDetail = () => {
     const [errores, setErrores] = useState<number[]>([])
     const [preferenceID, setPreferenceID] = useState()
 
-    initMercadoPago('APP_USR-12def95d-9ac0-4936-9d00-41bd13e577e0', {
+    initMercadoPago('APP_USR-90d2caac-e318-4b54-b849-378b07cb4f19', {
         locale: 'es-AR'
     });
 
