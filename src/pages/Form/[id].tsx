@@ -1,7 +1,12 @@
 import Footer from "@/components/Footer";
+import FormDataX from "@/components/FormDataX";
 import NavBar from "@/components/NavBar";
+import OptionChoser from "@/components/OptionsChocer";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { FormatText } from "@/utils/FormatText";
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+
 
 interface Opcion {
     checks: number;
@@ -24,7 +29,6 @@ interface Pregunta {
     pregunta: string;
     aclaracion?: string;
     type?: boolean;
-    function: string;
 }
 
 const PlanDetail = () => {
@@ -32,10 +36,15 @@ const PlanDetail = () => {
     const [price, setPrice] = useState<number>();
     const [respuestas, setRespuestas] = useState<Record<number, string | File[]>>({});
     const [errores, setErrores] = useState<number[]>([])
+    const [preferenceID, setPreferenceID] = useState()
+
+    initMercadoPago('APP_USR-12def95d-9ac0-4936-9d00-41bd13e577e0', {
+        locale: 'es-AR'
+    });
 
     const router = useRouter();
     const id = Number(router.query.id);
-    
+
     const plans: Plan[] = [
         {  
             id:0,
@@ -45,7 +54,7 @@ const PlanDetail = () => {
                 {
                     checks: 1,
                     semanas: 4,
-                    price: 30000
+                    price: 100
                 },
                 {
                     checks: 2,
@@ -121,98 +130,80 @@ const PlanDetail = () => {
     
     const preguntas: Pregunta[] = [
         {
+            pregunta: 'Ingresa tu nombre y apellido: '
+        },
+        {
             pregunta: 'Ingresa tu peso, altura y edad: ',
-            function: ''
         },
         {
             pregunta: 'Ingrese su horario de entrenamiento: ',
-            function: ''
         },
         {
             pregunta: 'Ingresa a qué hora te despiertas y a qué hora te acuestas: ',
-            function: ''
         },
         {
             pregunta: 'Ingrese las comidas que hace en el dia: ',
-            function: ''
         },
         {
             pregunta: ' Si ya sigues una rutina dietética, ingresa lo que comes en cada comida: ',
             aclaracion: '(si no sigues una rutina, di lo que comes, esto es importante)',
-            function: ''
         },
         {
             pregunta: 'Ingresa los suplementos que utiliza: ',
             aclaracion: '(En caso de no usar aclararlo igualmente)',
-            function: ''
         },
         {
             pregunta: 'Ingresa cuantas veces a la semana realiza entrenamiento de pesas u otra actividad y en que horario',
-            function: ''
         },
         {
             pregunta: 'Ingresa cual es el momento del dia en el que reportas mayor hambre: ',
-            function: ''
         },
         {
             pregunta: 'Tiene alguna intolerancia alimentaria?',
             aclaracion: '(gluten/lactosa, en caso de no tener aclararlo igualmente)',
-            function: ''
         },
         {
             pregunta: 'Ingresar cual es su disponibilidad de Dias/Semana para entrenar: ',
-            function: ''
         },
         {
             pregunta: '¿Desde cuándo practicas actividad física regularmente?',
             aclaracion: '(En caso de no entrenar con anterioridad aclararlo igualmente)',
-            function: ''
         },
         {
             pregunta: '¿Practicas alguna otra actividad?',
             aclaracion: '(Especificar tiempo y frecuencia)',
-            function: ''
         },
         {
             pregunta: '¿Tiene alguna limitación para hacer ejercicio?',
-            function: ''
         },
         {
             pregunta: '¿Tiene alguna enfermedad o toma medicación continua?',
             aclaracion: '(anticonceptiva por ejemplo)',
-            function: ''
         },
         {
             pregunta: '¿Alguna vez ha usado esteroides anabólicos u otros medicamentos con fines estéticos?',
             aclaracion: '(informe todos los compuestos o medicamentos en uso o todo el historial de uso por favor)',
-            function: ''
         },
         {
             pregunta: 'Describa su calidad de sueño: ',
-            function: ''
         },
         {
             pregunta: '¿Tiene antecedentes de Diabetes en familiares cercanos?',
-            function: ''
         },
         {
             pregunta: '¿Tiene enfermedad del tracto gastrointestinal?',
-            function: ''
         },
         {
             pregunta: '¿Cuál es su objetivo con la consultoría?',
-            function: ''
         },
         {
             pregunta: 'Fotos: de frente, de espalda y de perfil',
             aclaracion: '(Necesarias para evaluar tu fisico, hombre con ropa interior y mujer con topper y short o bikini)',
             type: true,
-            function: ''
         },
         {
             pregunta: 'Ingrese su numero telefonico: ',
             aclaracion: '(El plan sera enviado por WhatsApp, asegurese de no cometer errores)',
-            function: ''
         },
     ]
 
@@ -221,6 +212,27 @@ const PlanDetail = () => {
         setPrice(price);
     };
 
+    const createPreference = async (price: number | undefined, title: string ) => {
+        console.log(price, title)
+        try {
+            fetch('http://localhost:4000/create-preference', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify({ title: title, price: price}), 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setPreferenceID(data.id)
+                return data
+            })
+        } catch (error) {
+            return error
+        }
+    }
+
     const handleChange = (index: number, value: string | FileList) => {
         setRespuestas(prev => ({
             ...prev,
@@ -228,7 +240,7 @@ const PlanDetail = () => {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const preguntasIncompletas: number[] = [];
     
         preguntas.forEach((_, index) => {
@@ -247,10 +259,45 @@ const PlanDetail = () => {
             alert("Por favor, ingresa las imágenes para continuar");
             return;
         }
+
+        if(!opcionSelected){
+            alert("Por favor, selecciona la duracion del plan para continuar");
+            return;
+        }
     
-        console.log("Respuestas enviadas:", respuestas);
-    };
-    
+        const subject = 'Cliente: ' + respuestas[0] + ' || ' + 'Plan: ' + usedPlan.titulo + ' || ' + 'Opcion: ' + opcionSelected
+        const { text, images } = FormatText({ preguntas, respuestas });
+
+        const formData = new FormData();
+        text.forEach((str) => {
+            formData.append('text', str);  // 'strings[]' es el nombre del campo
+        });
+        
+        images.forEach((image) => {
+            formData.append('images', image);
+        });
+
+        formData.append('subject', subject)
+        const data = await createPreference(price, subject)
+        console.log(data)
+        /*
+        try {
+            const response = await fetch('http://localhost:4000/send-email', {
+                method: 'POST',
+                body: formData, // No se agregan headers manualmente
+            });
+        
+            const result = await response.json();
+            console.log('result: ', result)
+            if(result){
+                console.log('entro')
+            }
+        } catch (error) {
+            console.error('Error al enviar el correo:', error);
+        }
+        */
+        
+    }
 
     return (
         <div>
@@ -262,78 +309,13 @@ const PlanDetail = () => {
                     <h1 className="text-white text-2xl lg:text-4xl">Plan seleccionado: {usedPlan.titulo}</h1>
                     <p className="text-white text-xl lg:text-4xl">Rellene los siguientes datos</p>
                 </div>
-                <div className="flex flex-col text-white bg-[#151515] p-5 lg:m-5 rounded-lg">
-                    <div className="flex flex-wrap gap-4 justify-between items-center">
-                        <div>
-                            <h1 className="text-2xl font-bold">Duracion del plan</h1>
-                            <p>Esta opcion altera el precio final del plan</p>
-                        </div>
-                        <div>
-                            <div className="flex gap-2 justify-start items-center">
-                                <h1 className="font-bold">Opcion seleccionada:</h1>
-                                {opcionSelected ?
-                                    <h1 className="font-bold text-red-600">Opcion {opcionSelected}</h1>
-                                :
-                                    <></>
-                                }
-                            </div>
-                            <div className="flex gap-2 justify-start items-center">
-                                <h1 className="font-bold">Precio final: </h1>
-                                <h1 className="font-bold text-red-600">{price}</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-center items-start pt-5 gap-4">
-                        {usedPlan.opciones.map((opcion, index) =>(
-                            <div key={index} className={`w-full rounded-lg border p-2 ${opcionSelected && opcionSelected-1 === index ? 'bg-[#252525]' : ''}`}>
-                                <p className="text-xl font-bold">Opcion {index + 1}</p>
-                                <div className="p-2">
-                                    <div className="pb-2">
-                                        <div className="flex gap-2">
-                                            <p>Plan pensado para</p>
-                                            <p className="text-red-600">{opcion.semanas}</p>
-                                            <p>semanas</p>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <p className="text-red-600">{opcion.checks}</p>
-                                            <p>checks en total</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex gap-1 justify-center items-center">
-                                            <p className="font-bold">Precio final: </p>
-                                            <p className="font-bold text-red-600">${opcion.price}</p>
-                                        </div>
-                                        <button onClick={()=>handleSelectOption(index, opcion.price)} className="p-2 bg-red-500 rounded-lg font-bold">Elegir</button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="flex flex-col text-white bg-[#151515] p-5 lg:m-5 rounded-lg">
-                    <h1 className="text-2xl font-bold">Datos personales</h1>
-                    <div className="flex flex-col justify-center gap-4 items-start w-full">
-                        {preguntas.map((pregunta, index) => (
-                            <div key={index} className="flex flex-col pb-5 lg:p-10 gap-2 w-full">
-                                <div>
-                                    <div className="flex flex-col lg:flex-row gap-2">
-                                        <p className="text-xl text-[#D72638]">{index + 1}</p>
-                                        <p className="text-lg">{pregunta.pregunta}</p>
-                                    </div>
-                                    <p className="text-[#a5a5a5]">{pregunta.aclaracion}</p>
-                                </div>
-                                
-                                {pregunta.type ? (
-                                    <input type="file" multiple onChange={(e) => handleChange(index, e.target.files!)} />
-                                ) : (
-                                    <input type="text" className={`rounded-lg p-2 text-black ${errores.includes(index) ? 'border-2 border-red-600' : '' }`} placeholder="Rellenar aquí" onChange={(e) => handleChange(index, e.target.value)} />
-                                )}   
-                            </div>
-                        ))}
-                    </div>
-                    <button onClick={handleSubmit} className="p-2 bg-red-500 rounded-lg font-bold">Ir a Pagar</button>
-                </div>                
+                <OptionChoser optionSelected={opcionSelected} usedPlan={usedPlan} price={price} handleSelectOption={handleSelectOption}/>
+                <FormDataX preguntas={preguntas} handleChange={handleChange} handleSubmit={handleSubmit} errores={errores}/>              
+                {preferenceID ?
+                <Wallet initialization={{ preferenceId: preferenceID }} customization={{ texts:{ valueProp: 'smart_option'}}} />                
+                :
+                <></>
+                }
             </div>
             <Footer/>
             </>

@@ -106,22 +106,22 @@ const Planes = () => {
             <div className="flex flex-wrap gap-4 p-4">
                 {plans && plans.map(plan=>(
                     <div key={plan.titulo} className=" flex flex-col bg-[#151515] hover:bg-[#252525] w-full p-4 rounded-lg">
-                        <h1 className="text-[#D72638] font-bold text-2xl">{plan.titulo}</h1>
+                        <h1 className="text-title font-bold text-2xl">{plan.titulo}</h1>
                         <div className="pb-6">
                             <p className="font-bold text-white">{plan.frase}</p>
                         </div>
                         <div className="flex flex-col lg:flex-row justify-start items-start text-white gap-1">
                             <p className="font-bold">Atencion via WhatsApp</p> 
                         </div>
-                        <div className="flex flex-col lg:flex-row justify-start items-start text-white gap-1"> 
-                            <div className="flex flex-wrap gap-2 text-[#D72638]">
+                        <div className="flex justify-start items-start text-white gap-1"> 
+                            <div className="flex gap-2 text-title">
                                 <p>{plan.opciones[0].checks}</p>
                             </div>
                             <p className="font-bold">checks por semana</p>
                         </div>
                         <div className="flex flex-col lg:flex-row justify-start items-start text-white gap-1">
                             <p className="font-bold">Dias de atencion: </p> 
-                            <div className="flex flex-wrap gap-2 text-[#D72638]">
+                            <div className="flex flex-wrap gap-2 text-title">
                                 {plan.atencion.dias.map(dia =>(
                                     <p key={dia}>{dia}</p>
                                 ))}
@@ -129,12 +129,12 @@ const Planes = () => {
                         </div>
                         <div className="flex justify-start items-start text-white gap-1">
                             <p className="font-bold">Horario de atencion: </p> 
-                            <div className="flex flex-wrap gap-2 text-[#D72638]">
+                            <div className="flex flex-wrap gap-2 text-title">
                                 {plan.atencion.horario}
                             </div>
                         </div>
                         <div className="flex w-full items-end justify-end">
-                            <Link href={`Form/${plan.id}`} className="font-bold text-white bg-[#D72638] rounded-lg p-2">Desde ${plan.opciones[0].price}</Link>
+                            <Link href={`Form/${plan.id}`} className="font-bold text-gris bg-title rounded-lg p-2 hover:bg-hover">Desde ${plan.opciones[0].price}</Link>
                         </div>
                     </div>
                 ))}

@@ -29,8 +29,15 @@ html{
 }
 
 .bg-image {
-  background-image: url("/photos/manu1BN.jpeg"); /* Ruta relativa desde /public */
+  background-image: url("/photos/ManuGym3.jpeg"); /* Ruta relativa desde /public */
   background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+@media (min-width: 1024px) {
+  /* Aquí van los estilos para pantallas de tamaño PC */
+  .bg-image {
+    background-image: url("/photos/ManuGym4Cort.jpeg");
+  }
 }
