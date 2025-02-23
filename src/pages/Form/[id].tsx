@@ -215,7 +215,7 @@ const PlanDetail = () => {
     const createPreference = async (price: number | undefined, title: string ) => {
         console.log(price, title)
         try {
-            fetch('http://localhost:4000/create-preference', {
+            fetch('https://trainnerpage-server-production.up.railway.app/create-preference', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', 
@@ -278,11 +278,9 @@ const PlanDetail = () => {
         });
 
         formData.append('subject', subject)
-        const data = await createPreference(price, subject)
-        console.log(data)
-        /*
+        
         try {
-            const response = await fetch('http://localhost:4000/send-email', {
+            const response = await fetch('https://trainnerpage-server-production.up.railway.app/send-email', {
                 method: 'POST',
                 body: formData, // No se agregan headers manualmente
             });
@@ -290,12 +288,11 @@ const PlanDetail = () => {
             const result = await response.json();
             console.log('result: ', result)
             if(result){
-                console.log('entro')
+                await createPreference(price, subject)
             }
         } catch (error) {
             console.error('Error al enviar el correo:', error);
         }
-        */
         
     }
 
