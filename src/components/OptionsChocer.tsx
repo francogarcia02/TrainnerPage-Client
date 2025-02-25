@@ -39,7 +39,7 @@ const OptionChoser = ({optionSelected, usedPlan, price, handleSelectOption}: Pro
                     </div>
                     <div className="flex gap-2 justify-start items-center">
                         <h1 className="font-bold">Precio final: </h1>
-                        <h1 className="font-bold text-title">{price}</h1>
+                        <h1 className="font-bold text-title">${price}</h1>
                     </div>
                 </div>
             </div>

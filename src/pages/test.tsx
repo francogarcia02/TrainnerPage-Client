@@ -2,11 +2,9 @@ import Footer from "@/components/Footer";
 import FormDataX from "@/components/FormDataX";
 import NavBar from "@/components/NavBar";
 import OptionChoser from "@/components/OptionsChocer";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormatText } from "@/utils/FormatText";
 import PaymentWindow from "@/components/PaymentWindow";
-
 
 
 interface Opcion {
@@ -39,10 +37,6 @@ const PlanDetail = () => {
     const [errores, setErrores] = useState<number[]>([])
     const [preferenceID, setPreferenceID] = useState()
 
-    
-    const router = useRouter();
-    const id = Number(router.query.id);
-
     const plans: Plan[] = [
         {  
             id:0,
@@ -52,7 +46,7 @@ const PlanDetail = () => {
                 {
                     checks: 1,
                     semanas: 4,
-                    price: 30000
+                    price: 100
                 },
                 {
                     checks: 2,
@@ -124,7 +118,7 @@ const PlanDetail = () => {
         },
     ]
     
-    const usedPlan: Plan = plans[id];
+    const usedPlan: Plan = plans[0];
     
     const preguntas: Pregunta[] = [
         {
