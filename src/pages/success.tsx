@@ -70,7 +70,7 @@ const Success = () =>{
     return(
         <div>
             <NavBar/>
-            <div className="background flex flex-col justify-center items-center p-2 lg:p-10">
+            <div className="background flex flex-col w-full justify-center items-center p-2 lg:p-10">
                 <h1 className="text-white text-2kx font-bold">Pago completado</h1>
             </div>
             <Footer/>
