@@ -37,7 +37,7 @@ const PlanDetail = () => {
     const [price, setPrice] = useState<number>();
     const [respuestas, setRespuestas] = useState<Record<number, string | File[]>>({});
     const [errores, setErrores] = useState<number[]>([])
-    const [preferenceID, setPreferenceID] = useState()
+
 
     
     const router = useRouter();
@@ -223,7 +223,6 @@ const PlanDetail = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setPreferenceID(data.id)
                 return data
             })
         } catch (error) {
@@ -285,9 +284,7 @@ const PlanDetail = () => {
         
             const result = await response.json();
             console.log('result: ', result)
-            if(result){
-                await createPreference(price, subject)
-            }
+            
         } catch (error) {
             console.error('Error al enviar el correo:', error);
         }
@@ -306,11 +303,6 @@ const PlanDetail = () => {
                 </div>
                 <OptionChoser optionSelected={opcionSelected} usedPlan={usedPlan} price={price} handleSelectOption={handleSelectOption}/>
                 <FormDataX preguntas={preguntas} handleChange={handleChange} handleSubmit={handleSubmit} errores={errores}/>              
-                {preferenceID ?
-                <PaymentWindow preferenceID={preferenceID}/>
-                :
-                <></>
-                }
             </div>
             <Footer/>
             </>
