@@ -5,6 +5,7 @@ import OptionChoser from "@/components/OptionsChocer";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormatText } from "@/utils/FormatText";
+import PaymentWindow from "@/components/PaymentWindow";
 
 
 
@@ -36,8 +37,8 @@ const PlanDetail = () => {
     const [price, setPrice] = useState<number>();
     const [respuestas, setRespuestas] = useState<Record<number, string | File[]>>({});
     const [errores, setErrores] = useState<number[]>([])
-
-
+    const [data, setData] = useState<FormData>()
+    const [subject, setSubject] = useState<string>()
     
     const router = useRouter();
     const id = Number(router.query.id);
@@ -209,26 +210,6 @@ const PlanDetail = () => {
         setPrice(price);
     };
 
-    const createPreference = async (price: number | undefined, title: string ) => {
-        console.log(price, title)
-        try {
-            fetch('https://trainnerpage-server-production.up.railway.app/create-preference', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', 
-                },
-                body: JSON.stringify({ title: title, price: price}), 
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                return data
-            })
-        } catch (error) {
-            return error
-        }
-    }
-
     const handleChange = (index: number, value: string | FileList) => {
         setRespuestas(prev => ({
             ...prev,
@@ -262,6 +243,7 @@ const PlanDetail = () => {
         }
     
         const subject = respuestas[0] + ' | ' + 'Plan: ' + usedPlan.titulo + ' | ' + 'Opcion: ' + opcionSelected
+        setSubject(subject)
         const { text, images } = FormatText({ preguntas, respuestas });
 
         const formData = new FormData();
@@ -274,20 +256,8 @@ const PlanDetail = () => {
         });
 
         formData.append('subject', subject)
-        
-        try {
-            const response = await fetch('https://trainnerpage-server-production.up.railway.app/send-email', {
-                method: 'POST',
-                body: formData, // No se agregan headers manualmente
-            });
-        
-            const result = await response.json();
-            createPreference(price, subject)	
-            console.log('result: ', result)
-            
-        } catch (error) {
-            console.error('Error al enviar el correo:', error);
-        }
+        setData(formData)
+        console.log(formData)
         
     }
 
@@ -303,6 +273,11 @@ const PlanDetail = () => {
                 </div>
                 <OptionChoser optionSelected={opcionSelected} usedPlan={usedPlan} price={price} handleSelectOption={handleSelectOption}/>
                 <FormDataX preguntas={preguntas} handleChange={handleChange} handleSubmit={handleSubmit} errores={errores}/>              
+                {data ?
+                <PaymentWindow data={data} price={price} subject={subject}/>
+                :
+                <></>
+                }
             </div>
             <Footer/>
             </>
