@@ -5,7 +5,6 @@ import OptionChoser from "@/components/OptionsChocer";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormatText } from "@/utils/FormatText";
-import PaymentWindow from "@/components/PaymentWindow";
 
 
 
