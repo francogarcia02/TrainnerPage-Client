@@ -282,6 +282,7 @@ const PlanDetail = () => {
             });
         
             const result = await response.json();
+            createPreference(price, title)	
             console.log('result: ', result)
             
         } catch (error) {
