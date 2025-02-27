@@ -1,16 +1,14 @@
 const Presentation = () => {
     return (
       <div className="bg-image h-[450px] lg:h-[550px] drop-shadow-xl p-5 w-full flex flex-col items-between justify-between gap-4 text-center">
-        <div className="flex flex-col items-start justify-center">
-            <h1 className="text-3xl text-start lg:text-6xl font-bold text-title">
-                Entrena Inteligente
+        <div className="flex flex-col items-start justify-center gap-2">
+            <h1 className="text-3xl bg-on lg:text-5xl font-bold uppercase p-1 ps-2 pe-2">
+                El exito es la suma de pequeños esfuerzos
             </h1>
-            <h1 className="text-3xl text-start lg:text-6xl font-bold text-title">
-                No Solo Duro
+            <h1 className="text-3xl bg-on lg:text-5xl font-bold uppercase p-1 ps-2 pe-2">
+                Repetidos dia tras dia
             </h1>
-            <p className="text-lg text-start font-bold lg:text-2xl text-title mt-4 max-w-2xl">
-                Planes adaptados a tus objetivos y nivel. Comienza hoy y alcanza tu mejor versión.
-            </p>
+            
         </div>
         
         <div className="w-full flex items-center justify-end gap-2">

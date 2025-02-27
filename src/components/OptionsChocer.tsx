@@ -50,7 +50,7 @@ const OptionChoser = ({optionSelected, usedPlan, price, handleSelectOption}: Pro
                         <div className="p-2">
                             <div className="pb-2">
                                 <div className="flex gap-2">
-                                    <p>Plan pensado para</p>
+                                    <p>Plan diagramado para</p>
                                     <p className="text-title">{opcion.semanas}</p>
                                     <p>semanas</p>
                                 </div>
