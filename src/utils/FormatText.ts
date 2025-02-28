@@ -18,7 +18,6 @@ export const FormatText = ({preguntas, respuestas}: Props) => {
         if (typeof respuestaLocal === "string") {
             textLines.push(item.pregunta)
             textLines.push(respuestaLocal)
-            textLines.push('') // Línea vacía para espaciar
         }
         else {
             images = respuestaLocal
