@@ -8,7 +8,6 @@ import PaymentWindow from "@/components/PaymentWindow";
 
 
 interface Opcion {
-    checks: number;
     semanas: number;
     price: number;
 }
@@ -17,6 +16,7 @@ interface Plan {
     id: number;
     titulo: string;
     frase: string;
+    check: number;
     opciones: Opcion[];
     atencion: {
         dias: string[];
@@ -43,19 +43,17 @@ const PlanDetail = () => {
             id:0,
             titulo: 'Basic',
             frase: 'Entrenamiento personalizado para comenzar con seguridad',
+            check: 25,
             opciones: [
                 {
-                    checks: 1,
                     semanas: 4,
                     price: 100
                 },
                 {
-                    checks: 2,
                     semanas: 8,
                     price: 50000
                 },
                 {
-                    checks: 4,
                     semanas: 12,
                     price: 75000
                 },
@@ -64,59 +62,7 @@ const PlanDetail = () => {
                 dias: ['Martes', 'Jueves'],
                 horario: '12 a 16 PM'
             }
-        },
-        {  
-            id:1,
-            titulo: 'Standard',
-            frase: 'Más seguimiento y optimización para tu progreso',
-            opciones: [
-                {
-                    checks: 2,
-                    semanas: 4,
-                    price: 38000
-                },
-                {
-                    checks: 4,
-                    semanas: 8,
-                    price: 65000
-                },
-                {
-                    checks: 8,
-                    semanas: 12,
-                    price: 100000
-                },
-            ], 
-            atencion: {
-                dias: ['Lunes','Miercoles','Viernes'],
-                horario: '12 a 16 PM'
-            }
-        },
-        {  
-            id:2,
-            titulo: 'Premium',
-            frase: 'Atención exclusiva y seguimiento avanzado',
-            opciones: [
-                {
-                    checks: 4,
-                    semanas: 4,
-                    price: 50000
-                },
-                {
-                    checks: 8,
-                    semanas: 8,
-                    price: 90000
-                },
-                {
-                    checks: 12,
-                    semanas: 12,
-                    price: 135000
-                },
-            ], 
-            atencion: {
-                dias: ['Lunes','Martes','Miercoles','Jueves','Viernes'],
-                horario: '9 a 22 PM'
-            }
-        },
+        }
     ]
     
     const usedPlan: Plan = plans[0];

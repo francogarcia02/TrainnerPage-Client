@@ -1,7 +1,6 @@
 import Link from "next/link"
 
 interface Opcion {
-    checks: number,
     semanas: number,
     price: number
 }
@@ -10,6 +9,7 @@ interface Plan {
     id: number,
     titulo: string,
     frase: string,
+    check: number;
     opciones: Opcion[],
     atencion: {
         dias: string[],
@@ -24,19 +24,17 @@ const Planes = () => {
             id:0,
             titulo: 'Basic',
             frase: 'Entrenamiento personalizado para comenzar con seguridad',
+            check: 25,
             opciones: [
                 {
-                    checks: 1,
                     semanas: 4,
                     price: 30000
                 },
                 {
-                    checks: 2,
                     semanas: 8,
                     price: 50000
                 },
                 {
-                    checks: 4,
                     semanas: 12,
                     price: 75000
                 },
@@ -50,19 +48,17 @@ const Planes = () => {
             id:1,
             titulo: 'Standard',
             frase: 'Más seguimiento y optimización para tu progreso',
+            check: 20,
             opciones: [
                 {
-                    checks: 2,
                     semanas: 4,
                     price: 38000
                 },
                 {
-                    checks: 4,
                     semanas: 8,
                     price: 65000
                 },
                 {
-                    checks: 8,
                     semanas: 12,
                     price: 100000
                 },
@@ -76,19 +72,17 @@ const Planes = () => {
             id:2,
             titulo: 'Premium',
             frase: 'Atención exclusiva y seguimiento avanzado',
+            check: 15,
             opciones: [
                 {
-                    checks: 4,
                     semanas: 4,
                     price: 50000
                 },
                 {
-                    checks: 8,
                     semanas: 8,
                     price: 90000
                 },
                 {
-                    checks: 12,
                     semanas: 12,
                     price: 135000
                 },
@@ -98,7 +92,7 @@ const Planes = () => {
                 horario: '9 a 22 PM'
             }
         },
-        ]
+    ]
     
     return(
         <div className="p-2 mt-20 flex flex-col gap-4 lg:p-6" id="planes">
@@ -115,9 +109,13 @@ const Planes = () => {
                         </div>
                         <div className="flex justify-start items-start text-white gap-1"> 
                             <div className="flex gap-2 text-title">
-                                <p>{plan.opciones[0].checks}</p>
+                                <p>1</p>
                             </div>
-                            <p className="font-bold">checks por semana</p>
+                            <p className="font-bold">checks cada</p>
+                            <div className="flex gap-2 text-title">
+                                <p>{plan.check}</p>
+                            </div>
+                            <p className="font-bold">dias</p>
                         </div>
                         <div className="flex flex-col lg:flex-row justify-start items-start text-white gap-1">
                             <p className="font-bold">Dias de atencion: </p> 

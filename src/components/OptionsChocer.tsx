@@ -1,5 +1,4 @@
 interface Opcion {
-    checks: number;
     semanas: number;
     price: number;
 }
@@ -9,6 +8,7 @@ interface Props {
         id: number;
         titulo: string;
         frase: string;
+        check: number;
         opciones: Opcion[];
         atencion: {
             dias: string[];
@@ -53,10 +53,6 @@ const OptionChoser = ({optionSelected, usedPlan, price, handleSelectOption}: Pro
                                     <p>Plan diagramado para</p>
                                     <p className="text-title">{opcion.semanas}</p>
                                     <p>semanas</p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <p className="text-title">{opcion.checks}</p>
-                                    <p>checks en total</p>
                                 </div>
                             </div>
                             <div className="flex justify-between items-center">
