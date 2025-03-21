@@ -9,13 +9,11 @@ interface Props {
 
 const PaymentWindow = ({ data, price, subject }: Props) => {
     const [preferenceID, setPreferenceID] = useState()
-    console.log('payment')
     initMercadoPago('APP_USR-90d2caac-e318-4b54-b849-378b07cb4f19', {
         locale: 'es-AR'
     });
 
     const createPreference = async (price: number | undefined, title: string | undefined ) => {
-        console.log(price, title)
         try {
             fetch('https://trainnerpage-server-production.up.railway.app/create-preference', {
                 method: 'POST',
@@ -26,7 +24,6 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setPreferenceID(data.id)
                 return data
             })
@@ -46,7 +43,6 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
                 });
             
                 const result = await response.json();
-                console.log('result: ', result)
                 if(result){
                     await createPreference(price, subject)
                 }
