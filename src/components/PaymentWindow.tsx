@@ -9,7 +9,7 @@ interface Props {
 
 const PaymentWindow = ({ data, price, subject }: Props) => {
     const [preferenceID, setPreferenceID] = useState()
-    initMercadoPago('APP_USR-90d2caac-e318-4b54-b849-378b07cb4f19', {
+    initMercadoPago('APP_USR-52bd65b2-eafb-46a7-9d3d-278894f528e5', {
         locale: 'es-AR'
     });
 
