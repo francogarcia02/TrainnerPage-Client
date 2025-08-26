@@ -1,5 +1,6 @@
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { useEffect, useState } from 'react';
+import Loading from './Loading';
 
 interface Props {
     data: FormData;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const PaymentWindow = ({ data, price, subject }: Props) => {
+    const [loading, setLoading] = useState<boolean>(true)
     const [preferenceID, setPreferenceID] = useState()
     initMercadoPago('APP_USR-52bd65b2-eafb-46a7-9d3d-278894f528e5', {
         locale: 'es-AR'
@@ -24,10 +26,13 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 setPreferenceID(data.id)
+                setLoading(false)
                 return data
             })
         } catch (error) {
+            console.log(error)
             return error
         }
     }
@@ -39,10 +44,11 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
             try {
                 const response = await fetch('https://trainnerpage-server-production.up.railway.app/send-email', {
                     method: 'POST',
-                    body: data, // No se agregan headers manualmente
+                    body: data, 
                 });
             
                 const result = await response.json();
+                console.log(response)
                 if(result){
                     await createPreference(price, subject)
                 }
@@ -56,14 +62,20 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
     
     return (
         data ? (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-black">
                 <div className="bg-white text-center p-6 rounded-lg shadow-lg w-96">
                     <h2 className="text-2xl mb-4">Realiza tu pago</h2>
                     <p className="font-bold mb-4">Espera a que aparezca el boton de marcado pago</p>
-                    {preferenceID ?
-                    <Wallet initialization={{ preferenceId: preferenceID }} customization={{ texts: { valueProp: 'smart_option' } }} />                    
-                    :
-                    <></>
+                    {loading ?
+                        <Loading/>
+                    :   
+                        <>
+                        {preferenceID ?
+                        <Wallet initialization={{ preferenceId: preferenceID }} customization={{ texts: { valueProp: 'smart_option' } }} />                    
+                        :
+                        <></>
+                        }
+                        </>
                     }
                 </div>
             </div>
