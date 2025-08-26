@@ -48,7 +48,7 @@ const PaymentWindow = ({ data, price, subject }: Props) => {
                 });
             
                 const result = await response.json();
-                console.log(response)
+                console.log('response: ',response)
                 if(result){
                     await createPreference(price, subject)
                 }
